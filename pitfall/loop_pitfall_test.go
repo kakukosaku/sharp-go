@@ -17,20 +17,20 @@ func TestLoopPitfall(t *testing.T) {
 	for i := 0; i < 3; i++ {
 		printFunctions1 = append(printFunctions1, func() int { return i })
 	}
-
 	for _, f := range printFunctions1 {
+		// Note: this: expect!
 		assert.Equal(t, 3, f())
 	}
 
 	// for loop with non-closure func call
 	printFunctions2 := make([]func() int, 0)
 	for i := 0; i < 3; i++ {
+		// Note: this
 		t := i
 		printFunctions2 = append(printFunctions2, func() int { return t })
 	}
-
 	for i, f := range printFunctions2 {
-		// Note: this!
+		// Note: this: expect!
 		assert.Equal(t, i, f())
 	}
 }

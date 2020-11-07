@@ -37,6 +37,7 @@ func TestControlFlow(t *testing.T) {
 	//	t.Logf(".")
 	//}
 
+	// switch to some `equal` case
 	choice := "A"
 	switch choice {
 	case "A", "B", "C":

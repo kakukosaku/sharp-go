@@ -23,11 +23,11 @@ func TestBasicDataType(t *testing.T) {
 	var s1 string
 	assert.Equal(t, "", s1)
 
-	// declare && define
+	// declare && define(init)
 	i2 := 1
 	assert.Equal(t, 1, i2)
 
-	// multiple var
+	// multiple var once
 	var r1 int32
 	r2, s2 := 'a', "a中文"
 	assert.IsType(t, r1, r2)

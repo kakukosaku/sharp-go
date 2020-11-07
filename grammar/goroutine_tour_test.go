@@ -7,7 +7,9 @@
 package grammar_test
 
 import (
+	"context"
 	"github.com/stretchr/testify/assert"
+	"sync/atomic"
 	"testing"
 	"time"
 )
@@ -15,55 +17,76 @@ import (
 func TestGoroutine(t *testing.T) {
 	// consumer & producer example code
 
-	// Job chan with 10 buffer:
-	ch := make(chan int, 10)
+	// Job chan with 5 buffer:
+	jobs := make(chan int, 5)
+	var jobsCounter int32 = 0
 
-	// producer
-	// add int:i to ch every second and then accumulate i, in 10 seconds
-	go func() {
-		i := 1
-		endTime := time.After(time.Duration(10) * time.Second)
-	End:
+	// use ctx timeout to finish this *Producer goroutine*
+	ctx, cancel := context.WithCancel(context.Background())
+
+	// *Producer goroutine*
+	// add int:i to ch every second and then accumulate i
+	go func(ctx context.Context, jobs chan<- int, jobsCounter *int32) {
+		i := 0
 		for {
-			select {
-			case <-endTime:
-				t.Log("[P] end!")
-				close(ch)
-				break End
-			case <-time.Tick(time.Duration(1) * time.Second):
-				t.Log("[P] add:", i)
-				ch <- i
-			}
 			i++
+			select {
+			case <-ctx.Done():
+				t.Log("[P] end cause by cancel called!")
+				close(jobs)
+				return
+			default:
+				jobs <- -i
+				atomic.AddInt32(jobsCounter, 1)
+				t.Log("[P] add:", -i)
+			}
+		}
+	}(ctx, jobs, &jobsCounter)
+
+	// result channel with zero-buf
+	rest := make(chan int)
+
+	// *Consumer goroutine*
+	worker := func(workerId int, jobs <-chan int, rest chan<- int) {
+		for i := range jobs {
+			t.Logf("[C-%d] got i:%d\n", workerId, i)
+			rest <- -i
+		}
+		t.Logf("[C-%d] end!", workerId)
+	}
+
+	// start workerN consumer goroutine
+	workerN := 3
+	for i := 0; i < workerN; i++ {
+		go worker(i, jobs, rest)
+	}
+
+	// in another goroutine finish producer
+	go func() {
+		select {
+		case <-time.After(10 * time.Second):
+			cancel()
 		}
 	}()
 
-	// result
-	rest := make(chan int, 2)
-
-	// consumer
-	workerN := 3
-	worker := func(workerId int) {
-		sum := 0
-		for i := range ch {
-			t.Logf("[C-%d]got i:%d\n", workerId, i)
-			sum += i
+	// calculate result!
+	total := func(ctx context.Context, jobs <-chan int, rest <-chan int, jobsCounter *int32) int {
+		var total int
+		var c int32 = 0
+		for {
+			select {
+			// get result every 1s, this rate limit the P/C rate actually!
+			case <-time.After(1 * time.Second):
+				total += <-rest
+				c++
+				if c == atomic.LoadInt32(jobsCounter) {
+					return total
+				}
+			}
 		}
-		t.Logf()
-		rest <- sum
-	}
-	for i := 0; i < workerN; i++ {
-		go worker(i)
-	}
+	}(ctx, jobs, rest, &jobsCounter)
 
-	total := 0
-	for i := 0; i < workerN; i++ {
-		total += <-rest
-		if i == workerN-1 {
-			close(rest)
-		}
-	}
-
-	// actual 1+2+3+...+9
-	assert.Equal(t, 45, total)
+	// actual 1+2+3+...+18 why is 18?
+	// 5 buf + 10(1 every 1s)
+	assert.Equal(t, 171, total)
 }
