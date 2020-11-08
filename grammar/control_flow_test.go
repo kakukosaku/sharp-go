@@ -57,7 +57,7 @@ func TestControlFlow(t *testing.T) {
 
 	// select used for channel
 	select {
-	case <- time.After( time.Duration(3) * time.Second):
+	case <-time.After(time.Duration(3) * time.Second):
 		t.Log("after three seconds")
 	}
 }

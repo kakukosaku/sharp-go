@@ -32,6 +32,9 @@ func Encode(w io.Writer, req *Request) {}
 API and process boundaries. 在go中, 一般显示使用 ctx, 作为整个function call chain中函数的第一个参数. 示例:
 
 ```go
+package main
+import "context"
+
 func F(ctx context.Context, /* other arguments */) {}
 ```
 
