@@ -4,27 +4,23 @@ Tips of Effective Go :)
 
 ## Reference & Resource
 
-[Effective Go](https://golang.org/doc/effective_go.html) & [Package demostration](https://golang.org/pkg/strings/#example_Map)
-
-[Package & Example Resource](https://golang.org/pkg/)
+- [Effective Go](https://golang.org/doc/effective_go.html) & [Package demostration](https://golang.org/pkg/strings/#example_Map)
+- [Package & Example Resource](https://golang.org/pkg/)
 
 ## Prerequests
 
 - [How to Write Go Code](https://golang.org/doc/code.html)
-
 - [Tour of Go](https://tour.golang.org/welcome/1)
-
 - [language specification](https://golang.org/ref/spec)
 
 ## Overview
 
-- [x] [Formating](#Formatting)
+- [x] [Formatting](#Formatting)
 - [x] [Commentary](#Commentary)
 - [x] [Names](#Names)
 - [x] [Semicolons](#Semicolons)
 - [x] [Control structures](#Control-structures)
 - [x] [Functions](#Functions)
-
 - [x] [Data](#Data)
 - [x] [Initialization](#Initialization)
 - [x] [Methods](#Methods)
@@ -60,10 +56,9 @@ The visibility of a name outside a package is determined by whether its first ch
 - Getters
 
 1. Go doesn't provide automatic support for getters and setters.
-
 2. If you have a field called owner(lower case, unexported), the gatter method should be called Owner(upper case, exported), not getowner! A setter function if needed, will likely be called SetOwner. Both names read well in practice:
 
-```go
+```
 owner := obj.Owner()
 if owner != user {
     obj.SetOwner(user)
@@ -81,14 +76,11 @@ if owner != user {
 ## Semicolons
 
 1. Semicolons is used to terminate statements.
-
 2. If the newline comes after a token that could end a statement, insert a semicolon.
-
 3. Idiomatic Go programs have semicolons only in places such as for loop clauses, to separate the initializer, condition, and continuation elements.
-
 4. One consequence of the semicolon insertion rules is that you cannot put the opening brace of a control structure (if, for, switch, or select) on the next line. eg:
 
-```go
+```
 // it is ok!
 if i < f() {
     g()
@@ -106,14 +98,12 @@ if i < f()  // wrong!
 - If
 
 1. Only a for loop
-
 2. if, switch, for accept an optional initialization statement
-
 3. can omiit else statement, if the body end in break, continue, goto or return.
 
 - Redeclaration and reassignment
 
-```go
+```
 f, err := os.Open(name)
 
 // or
@@ -125,9 +115,7 @@ which looks as if it declares d and err. Notice, though, that err appears in bot
 In a := declaration a variable v may appear even if it has already been declared, provided:
 
 1. this declaration is in the same scope as the existing declaration of v (if v is already declared in an outer scope, the declaration will create a new variable)
-
 2. the corresponding value in the initialization is assignable to v, and
-
 3. there is at least one other variable in the declaration that is being declared a new.
 
 This unusual property is pure pragmatism, making it easy to use a single err value, for example, in a long if-else chain. You'll see it used often.
@@ -138,7 +126,7 @@ This unusual property is pure pragmatism, making it easy to use a single err val
 
 eg:
 
-```go
+```
 // Like a C for
 for init; condition; post { }
 
@@ -151,7 +139,7 @@ for { }
 
 or eg:
 
-```go
+```
 sum := 0
 for i := 0; i < 10; i++ {
     sum += i
@@ -160,7 +148,7 @@ for i := 0; i < 10; i++ {
 
 range eg:
 
-```go
+```
 for key, value := range oldMap {
     newMap[key] = value
 }
@@ -180,7 +168,7 @@ for _, value := range array {
 
 Specialy, For strings, the range does more work for you, breaking out individual Unicode code points by parsing the UTF-8. Erroneous encodings consume one byte and produce the replacement rune U+FFFD. (The name (with associated builtin type) rune is Go terminology for a single Unicode code point
 
-```go
+```
 for pos, char := range "日本\x80語" { // \x80 is an illegal UTF-8 encoding
     fmt.Printf("character %#U starts at byte position %d\n", char, pos)
 }
@@ -194,7 +182,7 @@ character U+8A9E '語' starts at byte position 7
 
 Finally, Go has no comma operator and ++ and -- are statements not expressions. Thus if you want to run multiple variables in a for you should use parallel assignment (although that precludes ++ and --).
 
-```go
+```
 // Reverse a
 for i, j := 0, len(a)-1; i < j; i, j = i+1, j-1 {
     a[i], a[j] = a[j], a[i]
@@ -205,7 +193,7 @@ for i, j := 0, len(a)-1; i < j; i, j = i+1, j-1 {
 
 Go's switch is more general than C's. The expressions need not be constants or even integers, the cases are evaluated top to bottom until a match is found, and if the switch has no expression it switches on true. It's therefore possible—and idiomatic—to write an if-else-if-else chain as a switch.
 
-```go
+```
 func unhex(c byte) byte {
     switch {
     case '0' <= c && c <= '9':
@@ -221,7 +209,7 @@ func unhex(c byte) byte {
 
 There is no automatic fall through, but cases can be presented in comma-separated lists.
 
-```go
+```
 func shouldEscape(c byte) bool {
     switch c {
     case ' ', '?', '&', '=', '#', '+', '%':
@@ -233,7 +221,7 @@ func shouldEscape(c byte) bool {
 
 Although they are not nearly as common in Go as some other C-like languages, break statements can be used to terminate a switch early. Sometimes, though, it's necessary to break out of a surrounding loop, not the switch, and in Go that can be accomplished by putting a label on the loop and "breaking" to that label. This example shows both uses.
 
-```go
+```
 Loop:
 	for n := 0; n < len(src); n += size {
 		switch {
@@ -262,7 +250,7 @@ Of course, the continue statement also accepts an optional label but it applies 
 
 eg:
 
-```go
+```
 // Compare returns an integer comparing the two byte slices,
 // lexicographically.
 // The result will be 0 if a == b, -1 if a < b, and +1 if a > b
@@ -289,7 +277,7 @@ func Compare(a, b []byte) int {
 
 A switch can also be used to discover the dynamic type of an interface variable. Such a type switch uses the syntax of a type assertion with the keyword `type` inside the parenthese. If the switch declaress a variable in the expression, the variable will have the coreesponding type in each clause. It's also idiomatic to reuse the name in such cases, in effect declaring a new variable with the same name but a different type in each case.
 
-```go
+```
 var t interface{}
 t = functionOfSomeType()
 switch t := t.(type) {
@@ -320,7 +308,7 @@ The names are not mandatory but they can make code shorter and clearer: they're 
 
 Because named results are initialized and tied to an unadorned return, they can simplify as well as clarify. Here's a version of io.ReadFull that uses them well:
 
-```go
+```
 func ReadFull(r Reader, buf []byte) (n int, err error) {
     for len(buf) > 0 && err == nil {
         var nr int
@@ -336,7 +324,7 @@ func ReadFull(r Reader, buf []byte) (n int, err error) {
 
 Go's defer statement schedules a function call (the deferred function) to be run immediately before the function executing the defer returns. It's an unusual but effective way to deal with situations such as resources that must be released regardless of which path a function takes to return. The canonical examples are unlocking a mutex or closing a file.
 
-```go
+```
 // Contents returns the file's contents as a string.
 func Contents(filename string) (string, error) {
     f, err := os.Open(filename)
@@ -362,10 +350,9 @@ func Contents(filename string) (string, error) {
 ```
 
 1. The arguments to the deferred function (which include the receiver if the function is a method) are evaluated when the defer executes, not when the call executes.
-
 2.  Besides avoiding worries about variables changing values as the function executes, this means that a single deferred call site can defer multiple function executions. Here's a silly example.
 
-```go
+```
 for i := 0; i < 5; i++ {
     defer fmt.Printf("%d ", i)
 }
@@ -375,7 +362,7 @@ for i := 0; i < 5; i++ {
 
 We can do better by exploiting the fact that arguments to deferred functions are evaluated when the defer executes. The tracing routine can set up the argument to the untracing routine. This example:
 
-```go
+```
 func trace(s string) string {
     fmt.Println("entering:", s)
     return s
@@ -424,7 +411,7 @@ Go has two allocation primitives, the built-in functions new and make. They do d
 
 Sometimes the zero value isn't good enough and an initializing constructor is necessary, as in this example derived from package os.
 
-```go
+```
 func NewFile(fd int, name string) *File {
     if fd < 0 {
         return nil
@@ -440,7 +427,7 @@ func NewFile(fd int, name string) *File {
 
 We can simplify it using a composite literal, which is an expression that creates a new instance each time it is evaluated.
 
-```go
+```
 func NewFile(fd int, name string) *File {
     if fd < 0 {
         return nil
@@ -458,7 +445,7 @@ return &File{fd, name, nil, 0}
 
 The fields of a composite literal are laid out in order and must all be present. However, by labeling the elements explicitly as field:value pairs, the initializers can appear in any order, with the missing ones left as their respective zero values. Thus we could say:
 
-```go
+```
 return &File{fd: fd, name: name}
 ```
 
@@ -466,7 +453,7 @@ As a limiting case, if a composite literal contains no fields at all, it creates
 
 Composite literals can also be created for arrays, slices, and maps, with the field labels being indices or map keys as appropriate. In these examples, the initializations work regardless of the values of Enone, Eio, and Einval, as long as they are distinct.
 
-```go
+```
 // Enone, Eio, Einval is non-negative integer constant in array & slice conposite literals.
 a := [...]string   {Enone: "no error", Eio: "Eio", Einval: "invalid argument"}
 s := []string      {Enone: "no error", Eio: "Eio", Einval: "invalid argument"}
@@ -477,7 +464,7 @@ m := map[int]string{Enone: "no error", Eio: "Eio", Einval: "invalid argument"}
 
 Back to allocation. The built-in function make(T, args) serves a purpose different from new(T). It creates slices, maps, and channels only, and it returns an initialized (not zeroed) value of type T (not *T). The reason for the distinction is that these three types represent, under the covers, references to data structures that must be initialized before use. A slice, for example, is a three-item descriptor containing a pointer to the data (inside an array), the length, and the capacity, and until those items are initialized, the slice is nil. For slices, maps, and channels, make initializes the internal data structure and prepares the value for use. For instance,
 
-```go
+```
 make([]int, 10, 100)
 ```
 
@@ -485,7 +472,7 @@ allocates an array of 100 ints and then creates a slice structure with length 10
 
 These examples illustrate the difference between new and make.
 
-```go
+```
 var p *[]int = new([]int)       // allocates slice structure; *p == nil; rarely useful
 var v  []int = make([]int, 100) // the slice v now refers to a new array of 100 ints
 
@@ -511,7 +498,7 @@ There are major differences between the ways arrays work in Go and C. In Go
 
 The value property can be useful but also expensive; if you want C-like behavior and efficiency, you can pass a pointer to the array.
 
-```go
+```
 func Sum(a *[3]float64) (sum float64) {
     for _, v := range *a {
         sum += v
@@ -531,19 +518,19 @@ Slices wrap arrays to give a more general, powerful, and convenient interface to
 
 Slices hold references to an underlying array, and if you assign one slice to another, both refer to the same array. If a function takes a slice argument, changes it makes to the elements of the slice will be visible to the caller, analogous to passing a pointer to the underlying array. A Read function can therefore accept a slice argument rather than a pointer and a count; the length within the slice sets an upper limit of how much data to read. Here is the signature of the Read method of the File type in package os:
 
-```go
+```
 func (f *File) Read(buf []byte) (n int, err error)
 ```
 
 The method returns the number of bytes read and an error value, if any. To read into the first 32 bytes of a larger buffer buf, slice (here used as a verb) the buffer.
 
-```go
+```
 n, err := f.Read(buf[0:32])
 ```
 
 The length of a slice may be changed as long as it still fits within the limits of the underlying array; just assign it to a slice of itself. The capacity of a slice, accessible by the built-in function cap, reports the maximum length the slice may assume. Here is a function to append data to a slice. If the data exceeds the capacity, the slice is reallocated. The resulting slice is returned. The function uses the fact that len and cap are legal when applied to the nil slice, and return 0.
 
-```go
+```
 func Append(slice, data []byte) []byte {
     l := len(slice)
     if l + len(data) > cap(slice) {  // reallocate
@@ -565,14 +552,14 @@ We must return the slice afterwards because, although Append can modify the elem
 
 Define an array-of-arrays or slices-of-slices, eg:
 
-```go
+```
 type Transform [3][3]float64  // A 3x3 array, really an array of arrays.
 type LinesofText [][]byte     // A slice of byte slices.
 ```
 
 Because slices are variable-length, it is possible to have each inner slice be a different length. That can be a common situation, as in our LinesOfText example: each line has an independent length.
 
-```go
+```
 text := LinesOfText{
 	[]byte("Now is the time"),
 	[]byte("for all good gophers"),
@@ -582,7 +569,7 @@ text := LinesOfText{
 
 Sometimes it's necessary to allocate a 2D slice, a situation that can arise when processing scan lines of pixels, for instance. There are two ways to achieve this. One is to allocate each slice independently; the other is to allocate a single array and point the individual slices into it. Which to use depends on your application. If the slices might grow or shrink, they should be allocated independently to avoid overwriting the next line; if not, it can be more efficient to construct the object with a single allocation. For reference, here are sketches of the two methods. First, a line at a time:
 
-```go
+```
 // Allocate the top-level slice.
 picture := make([][]uint8, YSize) // One row per unit of y.
 // Loop over the rows, allocating the slice for each row.
@@ -593,7 +580,7 @@ for i := range picture {
 
 And now as one allocation, sliced into lines:
 
-```go
+```
 // Allocate the top-level slice, the same as before.
 picture := make([][]uint8, YSize) // One row per unit of y.
 // Allocate one large slice to hold all the pixels.
@@ -607,16 +594,13 @@ for i := range picture {
 - Maps
 
 1. Maps are a convenient and powerful built-in data structure that associate values of one type (the key) with values of another type (the element or value). 
-
 2. The key can be of any type for which the equality operator is defined, such as **integers, floating point and complex numbers, strings, pointers, interfaces (as long as the dynamic type supports equality), structs and arrays**. 
-
 3. Slices cannot be used as map keys, because equality is not defined on them. Like slices, maps hold references to an underlying data structure. 
-
 4. If you pass a map to a function that changes the contents of the map, the changes will be visible in the caller.
 
 Maps can be constructed using the usual composite literal syntax with colon-separated key-value pairs, so it's easy to build them during initialization.
 
-```go
+```
 var timeZone = map[string]int{
     "UTC":  0*60*60,
     "EST": -5*60*60,
@@ -628,7 +612,7 @@ var timeZone = map[string]int{
 
 An attempt to fetch a map value with a key that is not present in the map will return a zero value for the type of the entries in the map. For instance, if the map contains integers, looking up a non-existent key will return 0. a set can be implemented as a map with value type bool. Set the map entry to true to put the value in the set, and the test it by simple indexing.
 
-```go
+```
 attended := map[string]bool{
     "Ann": true,
     "Joe": true,
@@ -642,7 +626,7 @@ if attended[person] { // will be false if person is not in the map
 
 Sometimes you need to distinguish a missing entry from a zero value. Is there an entry for "UTC" or is that 0 because it's not in the map at all? You can discriminate with a form of multiple assignment.
 
-```go
+```
 var seconds int
 var ok bool
 seconds, ok = timeZone[tz]
@@ -650,7 +634,7 @@ seconds, ok = timeZone[tz]
 
 For obvious reasons this is called the “comma ok” idiom. In this example, if tz is present, seconds will be set appropriately and ok will be true; if not, seconds will be set to zero and ok will be false. Here's a function that puts it together with a nice error report:
 
-```go
+```
 func offset(tz string) int {
     if seconds, ok := timeZone[tz]; ok {
         return seconds
@@ -665,7 +649,7 @@ _, present := timeZone[tz]
 
 To delete a map entry, use the delete built-in function, whose arguments are the map and the key to be deleted. It's safe to do this even if the key is already absent from the map.
 
-```go
+```
 delete(timeZone, "PDT")  // Now on Standard Time
 ```
 
@@ -675,7 +659,7 @@ Formatted printing in Go uses a style similar to C's printf family but is richer
 
 You don't need to provide a format string. For each of Printf, Fprintf and Sprintf there is another pair of functions, for instance Print and Println. These functions do not take a format string but instead generate a default format for each argument. The Println versions also insert a blank between arguments and append a newline to the output while the Print versions add blanks only if the operand on neither side is a string. In this example each line produces the same output.
 
-```go
+```
 fmt.Printf("Hello %d\n", 23)
 fmt.Fprint(os.Stdout, "Hello ", 23, "\n")
 fmt.Println("Hello", 23)
@@ -686,7 +670,7 @@ The formatted print functions fmt.Fprint and friends take as a first argument an
 
 Here things start to diverge from C. First, the numeric formats such as %d do not take flags for signedness or size; instead, the printing routines use the type of the argument to decide these properties.
 
-```go
+```
 var x uint64 = 1<<64 - 1
 fmt.Printf("%d %x; %d %x\n", x, x, int64(x), int64(x))
 
@@ -696,7 +680,7 @@ fmt.Printf("%d %x; %d %x\n", x, x, int64(x), int64(x))
 
 If you just want the default conversion, such as decimal for integers, you can use the catchall format %v (for “value”); the result is exactly what Print and Println would produce. Moreover, that format can print any value, even arrays, slices, structs, and maps. Here is a print statement for the time zone map defined in the previous section.
 
-```go
+```
 fmt.Printf("%v\n", timeZone)  // or just fmt.Println(timeZone)
 
 // Output
@@ -705,7 +689,7 @@ fmt.Printf("%v\n", timeZone)  // or just fmt.Println(timeZone)
 
 For maps the keys may be output in any order, of course. When printing a struct, the modified format %+v annotates the fields of the structure with their names, and for any value the alternate format %#v prints the value in full Go syntax.
 
-```go
+```
 type T struct {
     a int
     b float64
@@ -730,7 +714,7 @@ map[string] int{"CST":-21600, "PST":-28800, "EST":-18000, "UTC":0, "MST":-25200}
 
 Another handy format is %T, which prints the type of a value.
 
-```go
+```
 fmt.Printf("%T\n", timeZone)
 
 // Output
@@ -741,7 +725,7 @@ summary: %v, %+v, %#v, %d, %s, %q, %+q, %#q, %T
 
 If you want to control the default format for a custom type, all that's required is to define a method with the signature String() string on the type. For our simple type T, that might look like this.
 
-```go
+```
 func (t *T) String() string {
     return fmt.Sprintf("%d/%g/%q", t.a, t.b, t.c)
 }
@@ -755,7 +739,7 @@ fmt.Printf("%v\n", t)
 
 Our String method is able to call Sprintf because the print routines are fully reentrant and can be wrapped this way. There is one important detail to understand about this approach, however: don't construct a String method by calling Sprintf in a way that will recur into your String method indefinitely. This can happen if the Sprintf call attempts to print the receiver directly as a string, which in turn will invoke the method again. It's a common and easy mistake to make, as this example shows.
 
-```go
+```
 type MyString string
 
 func (m MyString) String() string {
@@ -765,7 +749,7 @@ func (m MyString) String() string {
 
 It's also easy to fix: convert the argument to the basic string type, which does not have the method.
 
-```go
+```
 type MyString string
 func (m MyString) String() string {
     return fmt.Sprintf("MyString=%s", string(m)) // OK: note conversion.
@@ -776,13 +760,13 @@ In the [initialization section](#Initialization) we'll see another technique tha
 
 Another printing technique is to pass a print routine's arguments directly to another such routine. The signature of Printf uses the type ...interface{} for its final argument to specify that an arbitrary number of parameters (of arbitrary type) can appear after the format.
 
-```go
+```
 func Printf(format string, v ...interface{}) (n int, err error) {}
 ```
 
 Within the function Printf, v acts like a variable of type []interface{} but if it is passed to another variadic function, it acts like a regular list of arguments. Here is the implementation of the function log.Println we used above. It passes its arguments directly to fmt.Sprintln for the actual formatting.
 
-```go
+```
 // Println prints to the standard logger in the manner of fmt.Println.
 func Println(v ...interface{}) {
     std.Output(2, fmt.Sprintln(v...))  // Output takes parameters (int, string)
@@ -795,7 +779,7 @@ There's even more to printing than we've covered here. See the godoc documentati
 
 By the way, a ... parameter can be of a specific type, for instance ...int for a min function that chooses the least of a list of integers:
 
-```go
+```
 func Min(a ...int) int {
     min := int(^uint(0) >> 1)  // largest int
     for _, i := range a {
@@ -811,7 +795,7 @@ func Min(a ...int) int {
 
 Now we have the missing piece we needed to explain the design of the append built-in function. The signature of append is different from our custom Append function above. Schematically, it's like this:
 
-```go
+```
 func append(slice []T, elements ...T) []T
 ```
 
@@ -819,7 +803,7 @@ where T is a placeholder for any given type. **You can't actually write a functi
 
 What append does is append the elements to the end of the slice and return the result. The result needs to be returned because, as with our hand-written Append, the underlying array may change. This simple example
 
-```go
+```
 x := []int{1,2,3}
 x = append(x, 4, 5, 6)
 fmt.Println(x)
@@ -832,7 +816,7 @@ So append works a little like Printf, collecting an arbitrary number of argument
 
 But what if we wanted to da what our Append does and append a slice to a slice? use ... at the call site, just as we did in the call to Output above. This snippet produces identical output to the one above.
 
-```go
+```
 x := []int{1,2,3}
 y := []int{4,5,6}
 x = append(x, y...)
@@ -849,7 +833,7 @@ Although it doesn't look superficially very different from initialization in C o
 
 Constants in Go are just that -- constant. They are created at compile time, even when defined as locals in functions, and can only be numbers, characters(runes), strings or booleans. Beacause of the compile-time restriction, the expressions that define them must be constant expressions, evaluatable by the compiler. For instance, 1 << 3 is a constant expression, while math.Sin(math.Pi / 4) is not because the function call to math.Sin needs to happen at run time.
 
-```go
+```
 type ByteSize float64
 
 const (
@@ -895,7 +879,7 @@ The use here of Sprintf to implement ByteSize's String method is safe (avoids re
 
 Variables can be initialized just like constants but the initializer can be a general expression computed at run time.
 
-```go
+```
 var (
     home   = os.Getenv("HOME")
     user   = os.Getenv("USER")
@@ -909,7 +893,7 @@ Finally, each source file can define its own niladic init function to set up wha
 
 Besides initializations that cannot be expressed as declarations, a common use of init functions is to verify or repair correctness of the program state before real execution begins.
 
-```go
+```
 func init() {
     if user == "" {
         log.Fatal("$USER not set")
@@ -933,7 +917,7 @@ As wa saw with ByteSize, methods can be defined for any named type (except a poi
 
 In the discussion of slices above, we wrote an Append function. We can define it as a method on slices instead. To do this, we first declare a named type to which we can bind the method, and then make the receiver for the method a value of that type.
 
-```go
+```
 type ByteSlice []byte
 
 func (slice ByteSlice) Append(data []byte) []byte {
@@ -943,7 +927,7 @@ func (slice ByteSlice) Append(data []byte) []byte {
 
 This still requires the method to return the updated slice. We can eliminate that clumsiness by redefining the method to take a pointer to a ByteSlice as its receiver, so the method can overwrite the caller's slice.
 
-```go
+```
 func (p *ByteSlice) Append(data []byte) {
     slice := *p
     // Body as above, without the return.
@@ -953,7 +937,7 @@ func (p *ByteSlice) Append(data []byte) {
 
 In fact, we can do even better. If we modify our function so it looks like a standard Write method, like this,
 
-```go
+```
 func (p *ByteSlice) Write(data []byte) (n int, err error) {
     slice := *p
     // Again as above.
@@ -964,7 +948,7 @@ func (p *ByteSlice) Write(data []byte) (n int, err error) {
 
 the the type *ByteSlice satisfies the standard interface io.Writer, which is handy. For instance, we can print into one.
 
-```go
+```
 var b ByteSlice
 fmt.Fprintf(&b, "This hour has %d days\n", 7)
 ```
@@ -983,7 +967,7 @@ Interfaces in Go provide a way to specify the behavior of an object: if somethin
 
 A type can implement multiple interfaces. For instance, a collection can be sorted by the routines in package sort if it implements sort.Interface, which contains Len(), Less(i, j int) bool, and Swap(i, j int), and it could also have a custom formatter. In this contrived example Sequence satisfies both.
 
-```go
+```
 type Sequence []int
 
 // Methods required by sort.Interface.
@@ -1015,7 +999,7 @@ func (s Sequence) String() string {
 
 The String method of Sequence is recreating the work that Sprint already does for slices. We can share the effort if we convert the Sequence to a plain []int before calling Sprint.
 
-```go
+```
 func (s Sequence) String() string {
     sort.Sort(s)
     return fmt.Sprint([]int(s))
@@ -1026,7 +1010,7 @@ This method is another example of the conversion technique for calling Sprintf s
 
 It's an idiom in Go programs to convert the type of an expression to access a different set of methods. As an example, we could use the existing type sort.IntSlice to reduce the entire example to this:
 
-```go
+```
 type Sequence []int
 
 // Method for printing - sorts the elements before printing
@@ -1042,7 +1026,7 @@ Now, instead of having Sequence implement multiple interfaces (sorting and print
 
 Type switches are a form of conversion: they take an interface and, for each case in the switch, in a sense convert it to the type of that case. Here's a simplified version of how the code under fmt.Printf turns a value into a string using a type switch. If it's already a string, we want the actual string value held by the interface, while if it has a String method we want the result of calling the method.
 
-```go
+```
 type Stringer interface {
     String() string
 }
@@ -1060,19 +1044,19 @@ The first case finds a concrete value; the second converts the interface into an
 
 What if there's only one type we care about? If we know the value holds a string and we just want to extract it? A one-case type switch would do, but so would a type assertion. A type assertion takes an interface value and extracts from it a value of the specified explicit type. The syntax borrows from the clause opening a type switch, but with an explicit type rather than the type keyword:
 
-```go
+```
 value.(typeName)
 ```
 
 and the result is a new value with the static type typeName. That type must either be the concrete type held by the interface, or a second interface type that the value can be converted to. To extract the string we know is in the value, we could write:
 
-```go
+```
 str := value.(string)
 ```
 
 But if it turns out that the value does not contain a string, the program will crash with a run-time error. To guard against that, use the "comma, ok" idiom to test, safely, whether the value is a string:
 
-```go
+```
 str, ok := value.(string)
 if ok {
     fmt.Printf("string value is: %q\n", str)
@@ -1085,7 +1069,7 @@ If the type assertion fails, str will still exist and be of type string, but it 
 
 As an illustration of the capability, here's an if-else statement that's equivalent to the type switch that opened this section.
 
-```go
+```
 if str, ok := value.(string); ok {
     return str
 } else if str, ok := value.(Stringer); ok {
@@ -1105,7 +1089,7 @@ A similar approach allows the streaming cipher algorithms in the various crypto 
 
 The crypto/cipher interfaces look like this:
 
-```go
+```
 type Block interface {
     BlockSize() int
     Encrypt(src, dst []byte)
@@ -1119,7 +1103,7 @@ type Stream interface {
 
 Here's the definition of the counter mode (CTR) stream, which turns a block cipher into a streaming cipher; notice that the block cipher's details are abstracted away:
 
-```go
+```
 // NewCTR returns a Stream that encrypts/decrypts using the given Block in
 // counter mode. The length of iv must be the same as the Block's block size.
 func NewCTR(block Block, iv []byte) Stream
@@ -1131,7 +1115,7 @@ NewCTR applies not just to one specific encryption algorithm and data source but
 
 Since almost anything can have methods attached, almost anythin can satisfy an interface. One illustative example is in the http package, which define the Handler interface. Any object that implements Handler can server HTTP requests.
 
-```go
+```
 type Handler interface {
     ServeHTTP(ResponseWriter, *Request)
 }
@@ -1141,7 +1125,7 @@ ResponseWriter is itself an interface that provides access to the methods needed
 
 For brevity, let's ignore POSTs and assume HTTP requests are always GETs; that simplification does not affect the way the handlers are set up. Here's a trivial but complete implementation of a handler to count the number of times the page is visited.
 
-```go
+```
 // Simple counter server.
 type Counter struct {
     n int
@@ -1155,7 +1139,7 @@ func (ctr *Counter) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
 (Keeping with our theme, note how Fprintf can print to an http.ResponseWriter.) For reference, here's how to attach such a server to a node on the URL tree.
 
-```go
+```
 import "net/http"
 ...
 ctr := new(Counter)
@@ -1164,7 +1148,7 @@ http.Handle("/counter", ctr)
 
 But why make Counter a struct? An integer is all that's needed. (The receiver needs to be a pointer so the increment is visible to the caller.)
 
-```go
+```
 // Simpler counter server.
 type Counter int
 
@@ -1174,7 +1158,7 @@ func (ctr *Counter) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 }
 ```
 
-```go
+```
 // A channel that sends a notification on each visit.
 // (Probably want the channel to be buffered.)
 type Chan chan *http.Request
@@ -1187,7 +1171,7 @@ func (ch Chan) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 
 Finally, let's say we wanted to present on /args the arguments used when invoking the server binary. It's easy to write a function to print the arguments.
 
-```go
+```
 func ArgServer() {
     fmt.Println(os.Args)
 }
@@ -1195,7 +1179,7 @@ func ArgServer() {
 
 How do we turn that into an HTTP server? We could make ArgServer a method of some type whose value we ignore, but there's a cleaner way. Since we can define a method for any type except pointers and interfaces, we can write a method for a function. The http package contains this code:
 
-```go
+```
 // The HandlerFunc type is an adapter to allow the use of
 // ordinary functions as HTTP handlers.  If f is a function
 // with the appropriate signature, HandlerFunc(f) is a
@@ -1212,7 +1196,7 @@ HandlerFunc is a type with a method, ServeHTTP, so values of that type can serve
 
 To make ArgServer into an HTTP server, we first modify it to have the right signature.
 
-```go
+```
 // Argument server.
 func ArgServer(w http.ResponseWriter, req *http.Request) {
     fmt.Fprintln(w, os.Args)
@@ -1221,7 +1205,7 @@ func ArgServer(w http.ResponseWriter, req *http.Request) {
 
 ArgServer now has same signature as HandlerFunc, so it can be converted to that type to access its methods, just as we converted Sequence to IntSlice to access IntSlice.Sort. The code to set it up is concise:
 
-```go
+```
 http.Handle("/args", http.HandlerFunc(ArgServer))
 ```
 
@@ -1233,7 +1217,7 @@ In this section we have made an HTTP server from a struct, an integer, a channel
 
 - The blank identifier in multiple assignment
 
-```go
+```
 if _, err := os.Stat(path); os.IsNotExist(err) {
 	fmt.Printf("%s does not exist\n", path)
 }
@@ -1241,7 +1225,7 @@ if _, err := os.Stat(path); os.IsNotExist(err) {
 
 Occasionally you'll see code that discards the error value in order to ignore the error; this is terrible practice. Always check error returns; they're provided for a reason.
 
-```go
+```
 // Bad! This code will crash if path does not exist.
 fi, _ := os.Stat(path)
 if fi.IsDir() {
@@ -1251,7 +1235,7 @@ if fi.IsDir() {
 
 - Unused imports and variables
 
-```go
+```
 package main
 
 import (
@@ -1280,7 +1264,7 @@ By convention, the global declarations to silence import errors should come righ
 
 An unused import like fmt or io in the previous example should eventually be used or removed: blank assignments identify code as a work in progress. But sometimes it is useful to import a package only for its side effects, without any explicit use. For example, during its init function, the net/http/pprof package registers HTTP handlers that provide debugging information. It has an exported API, but most clients need only the handler registration and access the data through a web page. To import the package only for its side effects, rename the package to the blank identifier:
 
-```go
+```
 import _ "net/http/pprof"
 ```
 
@@ -1290,7 +1274,7 @@ This form of import makes clear that the package is being imported for its side 
 
 If it's necessary only to ask whether a type implements an interface, without actually using the interface itself, perhaps as part of an error check, use the blank identifier to ignore the type-asserted value:
 
-```go
+```
 if _, ok := val.(json.Marshaler); ok {
     fmt.Printf("value %v of type %T implements json.Marshaler\n", val, val)
 }
@@ -1302,7 +1286,7 @@ Go does not provide the typical, type-driven notion of subclassing, but it does 
 
 Interface embedding is very simple. We've mentioned th io.Reader and io.Writer interface before; here are their definitions.
 
-```go
+```
 type Reader interface {
     Read(p []byte) (n int, err error)
 }
@@ -1314,7 +1298,7 @@ type Writer interface {
 
 The io package also exports several other interfaces that specify objects that can implement several such methods. For instance, there is io.ReadWriter, an interface containing both Read and Write. We could specify io.ReadWriter by listing the two methods explicitly, but it's easier and more evocative to embed the two interfaces to form the new one, like this:
 
-```go
+```
 // ReadWriter is the interface that combines the Reader and Writer interfaces.
 type ReadWriter interface {
     Reader
@@ -1326,7 +1310,7 @@ This says just what it looks like: A ReadWriter can do what a Reader does and Wr
 
 The same basic idea applies to structs, but with more far-reaching implications. The bufio package has two struct types, bufio.Reader and bufio.Writer, each of which of course implements the analogous interfaces from package io. And bufio also implements a buffered reader/writer, which it does by combining a reader and a writer into one struct using embedding: it lists the types within the struct but does not give them field names.
 
-```go
+```
 // ReadWriter stores pointers to a Reader and a Writer.
 // It implements io.ReadWriter.
 type ReadWriter struct {
@@ -1337,7 +1321,7 @@ type ReadWriter struct {
 
 The embedded elements are pointers to structs and of course must be initialized to point to valid structs before they can be used. The ReadWriter struct could be written as
 
-```go
+```
 type ReadWriter struct {
     reader *Reader
     writer *Writer
@@ -1346,7 +1330,7 @@ type ReadWriter struct {
 
 but then to promote the methods of the fields and to satisfy the io interfaces, we would also need to provide forwarding methods, like this:
 
-```go
+```
 func (rw *ReadWriter) Read(p []byte) (n int, err error) {
     return rw.reader.Read(p)
 }
@@ -1358,7 +1342,7 @@ There's an important way in which embedding differs from subclassing. **When we 
 
 Embedding can also be a simple convennience shows an embedded field alongside a regular, named field.
 
-```go
+```
 type Job struct {
     Command string
     *log.Logger
@@ -1367,13 +1351,13 @@ type Job struct {
 
 The Job type now has the Log, Logf and other methods of *log.Logger. We could have given the Logger a field name, of course, but it's not necessary to do so. And now, once initialized, we can log to the Job:
 
-```go
+```
 job.Log("starting now...")
 ```
 
 The Logger is a regular field of the Job struct, so we can initialize it in the usual way inside the constructor for Job, like this,
 
-```go
+```
 func NewJob(command string, logger *log.Logger) *Job {
     return &Job{command, logger}
 }
@@ -1384,7 +1368,7 @@ job := &Job{command, log.New(os.Stderr, "Job: ", log.Ldate)}
 
 If we need to refer to an embedded field directly, the type name of the field, ignoring the package qualifier, serves as a field name, as it did in the Read method of our ReadWriter struct. Here, if we needed to access the *log.Logger of a Job variable job, we would write job.Logger, which would be useful if we wanted to refine the methods of Logger.
 
-```go
+```
 func (job *Job) Logf(format string, args ...interface{}) {
     job.Logger.Logf("%q: %s", job.Command, fmt.Sprintf(format, args...))
 }
@@ -1408,13 +1392,13 @@ Goroutines are multiplexed onto multiple OS threads so if one should block, such
 
 Prefix a function or method call with the go keyword to run the call in a new goroutine. When the call completes, the goroutine exits, silently. (The effect is similar to the Unix shell's & notation for running a command in the background.)
 
-```go
+```
 go list.Sort()  // run list.Sort concurrently; don't wait for it.
 ```
 
 A function literal can be handy in a goroutine invocation.
 
-```go
+```
 func Announce(message string, delay time.Duration) {
     go func() {
         time.Sleep(delay)
@@ -1429,7 +1413,7 @@ In Go, function literals are closures: the implementation makes sure the variabl
 
 Like maps, channels are allocated with make, and the resulting value acts as a reference to an underlying data structure. If an optional integer parameter is provided, it sets the buffer size for the channel. The default is zero, for an unbuffered or synchronous channel.
 
-```go
+```
 ci := make(chan int)            // unbuffered channel of integers
 cj := make(chan int, 0)         // unbuffered channel of integers
 cs := make(chan *os.File, 100)  // buffered channel of pointers to Files
@@ -1439,7 +1423,7 @@ Unbuffered channels combine communication(the exchange of a value) with synchron
 
 There are lots of nice idioms using channels. Here's one to get us started. In the previous section we launched a sort in the background. A channel can allow the launching goroutine to wait for the sort to complete.
 
-```go
+```
 c := make(chan int)  // Allocate a channel.
 // Start the sort in a goroutine; when it completes, signal on the channel.
 go func() {
@@ -1456,7 +1440,7 @@ doSomethingForAWhile()
 
 A buffered channel can be used like a semaphore, for instance to limit throughput. In this example, incoming requests are passed to handle, which sends a value into the channel, processes the request, and then receives a value from the channel to ready the “semaphore” for the next consumer. The capacity of the channel buffer limits the number of simultaneous calls to process.
 
-```go
+```
 var sem = make(chan int, MaxOutstanding)
 
 func handle(r *Request) {
@@ -1485,7 +1469,7 @@ Library routines must often return some sort of error indication to the caller. 
 
 By convention, errors have type error, a simple built-in interface.
 
-```go
+```
 type error interface {
     Error() string
 }
@@ -1493,7 +1477,7 @@ type error interface {
 
 A library writer is free to implement this interface with a richer model under the covers, making it possible not only to see the error but also to provide some context. As mentioned, alongside the usual *os.File return value, os.Open also returns an error value. If the file is opened successfully, the error will be nil, but when there is a problem, it will hold an os.PathError:
 
-```go
+```
 // PathError records an error and the operation and
 // file path that caused it.
 type PathError struct {
@@ -1509,7 +1493,7 @@ func (e *PathError) Error() string {
 
 PathError's Error generates a string like this:
 
-```go
+```
 open /etc/passwx: no such file or directory
 ```
 
@@ -1519,7 +1503,7 @@ When feasible, error strings should identify their origin, such as by having a p
 
 Callers that care about the precise error details can use a type switch or a type assertion to look for specific errors and extract details. For PathErrors this might include examining the internal Err field for recoverable failures.
 
-```go
+```
 for try := 0; try < 2; try++ {
     file, err = os.Create(filename)
     if err == nil {
@@ -1541,7 +1525,7 @@ The usual way to report an error to a caller is to return an error as an extra r
 
 For this purpose, there is a built-in function panic that in effect creates a run-time error that will stop the program (but see the next section). The function takes a single argument of arbitrary type—often a string—to be printed as the program dies. It's also a way to indicate that something impossible has happened, such as exiting an infinite loop.
 
-```go
+```
 // A toy implementation of cube root using Newton's method.
 func CubeRoot(x float64) float64 {
     z := x/3   // Arbitrary initial value
@@ -1559,7 +1543,7 @@ func CubeRoot(x float64) float64 {
 
 This is only an example but real library functions should avoid panic. If the problem can be masked or worked around, it's always better to let things continue to run rather than taking down the whole program. One possible counterexample is during initialization: if the library truly cannot set itself up, it might be reasonable to panic, so to speak.
 
-```go
+```
 var user = os.Getenv("USER")
 
 func init() {
@@ -1577,7 +1561,7 @@ A call to recover stops the unwinding and returns the argument passed to panic. 
 
 One application of recover is to shut down a failing goroutine inside a server without killing the other executing goroutines.
 
-```go
+```
 func server(workChan <-chan *Work) {
     for work := range workChan {
         go safelyDo(work)
@@ -1600,7 +1584,7 @@ Because recover always returns nil unless called directly from a deferred functi
 
 With our recovery pattern in place, the do function (and anything it calls) can get out of any bad situation cleanly by calling panic. We can use that idea to simplify error handling in complex software. Let's look at an idealized version of a regexp package, which reports parsing errors by calling panic with a local error type. Here's the definition of Error, an error method, and the Compile function.
 
-```go
+```
 // Error is the type of a parse error; it satisfies the error interface.
 type Error string
 func (e Error) Error() string {
@@ -1631,7 +1615,7 @@ If doParse panics, the recovery block will set the return value to nil—deferre
 
 With error handling in place, the error method (because it's a method bound to a type, it's fine, even natural, for it to have the same name as the builtin error type) makes it easy to report parse errors without worrying about unwinding the parse stack by hand:
 
-```go
+```
 if pos == 0 {
     re.error("'*' illegal at start of expression")
 }
