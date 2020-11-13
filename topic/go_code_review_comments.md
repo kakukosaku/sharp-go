@@ -1,6 +1,6 @@
 # Go Code Review Comments
 
-Ref: https://github.com/golang/go/wiki/CodeReviewComments#import-dot
+Ref: https://github.com/golang/go/wiki/CodeReviewComments
 
 This page collects common comments made during reviews of Go code, 
 so that a single detailed explanation can be referred to by shorthands. 

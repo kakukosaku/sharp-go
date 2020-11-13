@@ -14,7 +14,9 @@ This repository's goal is to help you familiar/master with go.
 
 ### grammar
 
-grammar
+- [Data Types](grammar/data_type_test.go)
+- [Control Flow](grammar/control_flow_test.go)
+- [Goroutine](grammar/goroutine_tour_test.go)
 
 ### pitfall
 
@@ -22,7 +24,22 @@ pitfall
 
 ### stdlib
 
-stdlib
+- bufio: implements buffered I/O. Exported function: `bufio.NewReader`, `bufio.NewScanner` etc.
+- bytes: implements functions for the manipulation of byte slices. Exported Function: `bytes.Contains`, `bytes.Equal`; Struct: `bytes.Buffer` etc.
+- container.heap, contain.list, contain.ring: common Interface implementation.
+- context: define context.Context used in invoke chain or sub-goroutines.
+- database: sql provides a generic interface around SQL (or SQL-like) databases, you need specific driver (import by _ to registered).
+- encoding: json, csv, xml Marshal, Unmarshal etc.
+- errors: implements functions to manipulate errors, such as `errors.New`, `errors.Is`, `errors.As` etc.
+- io:  provides basic interfaces to I/O primitives.
+- io/util: implements some I/O utility functions, such as `ioutil.ReadAll`, `ReadDir, ReadFile, WriteFile` etc.
+- math: etc.
+- net/http, net/url: so import for back-end developer!
+- path: implements utility routines for manipulating slash-separated, such as `Split, Join, Dir`.
+- regexp: RE functions.
+- strconv: types -> string or verse, such as `strconv.ParseInt strconv.FormtInt64`.
+- strings: implements simple functions to manipulate UTF-8 encoded strings.
+- time: time functions, such as `time.Now, time.NewTicker time.After` etc.
 
 ### project
 
@@ -34,8 +51,16 @@ example
 
 ### topic
 
-topic
+- [The Go Blog - Godoc: documenting Go code](topic/documenting_go_code.md)
+- [Effective Go](topic/effective_go.md)
+- [Go Code Review Comments](topic/go_code_review_comments.md)
+- [The Go Blog: Go Concurrency Patterns: Context](topic/go_concurrency_patterns.md)
+- [The Go Blog: Getting to Go: The Journey of Go's Garbage Collector](topic/go_garbage_collector.md)
+- [The Go Blog: Go GC: Prioritizing low latency and simplicity](topic/go_gc_low_latency_and_simplicity.md)
+- [The go Memory Model](topic/go_memory_model.md)
+- []()
 
-### summary
+Just Links:
 
-summary
+- [How to Write Go Code](https://golang.org/doc/code.html)
+- [The Go Blog Strings, bytes, runes and characters in Go](https://blog.golang.org/strings)
