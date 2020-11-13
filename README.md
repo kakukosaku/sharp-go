@@ -22,24 +22,24 @@ This repository's goal is to help you familiar/master with go.
 
 pitfall
 
-### stdlib
+### stdlib example codes
 
-- bufio: implements buffered I/O. Exported function: `bufio.NewReader`, `bufio.NewScanner` etc.
-- bytes: implements functions for the manipulation of byte slices. Exported Function: `bytes.Contains`, `bytes.Equal`; Struct: `bytes.Buffer` etc.
-- container.heap, contain.list, contain.ring: common Interface implementation.
-- context: define context.Context used in invoke chain or sub-goroutines.
-- database: sql provides a generic interface around SQL (or SQL-like) databases, you need specific driver (import by _ to registered).
-- encoding: json, csv, xml Marshal, Unmarshal etc.
-- errors: implements functions to manipulate errors, such as `errors.New`, `errors.Is`, `errors.As` etc.
-- io:  provides basic interfaces to I/O primitives.
-- io/util: implements some I/O utility functions, such as `ioutil.ReadAll`, `ReadDir, ReadFile, WriteFile` etc.
-- math: etc.
-- net/http, net/url: so import for back-end developer!
-- path: implements utility routines for manipulating slash-separated, such as `Split, Join, Dir`.
-- regexp: RE functions.
-- strconv: types -> string or verse, such as `strconv.ParseInt strconv.FormtInt64`.
-- strings: implements simple functions to manipulate UTF-8 encoded strings.
-- time: time functions, such as `time.Now, time.NewTicker time.After` etc.
+- [bufio](stdlib/bufio) implements buffered I/O. Exported function: `bufio.NewReader`, `bufio.NewScanner` etc.
+- [bytes](stdlib/bytes) implements function for the manipulation of byte slices. Exported Function: `bytes.Contains`, `bytes.Equal`; Struct: `bytes.Buffer` etc.
+- [container/heap](stdlib/container/heap), [contain/list](stdlib/container/list), [contain/ring](stdlib/container/ring): common Interface implementation.
+- [context](stdlib/context) define context.Context used in invoke chain or sub-goroutines.
+- [database/sql](stdlib/database/sql) database/sql provides a generic interface around SQL (or SQL-like) databases, you need specific driver (import by _ to registered).
+- [encoding/json](stdlib/encoding/json) json, csv, xml Marshal, Unmarshal etc.
+- [errors](stdlib/errors) implements functions to manipulate errors, such as `errors.New`, `errors.Is`, `errors.As` etc.
+- [io](stdlib/io) provides basic interfaces to I/O primitives.
+- [io/util](stdlib/io/ioutil) implements some I/O utility functions, such as `ioutil.ReadAll`, `ReadDir, ReadFile, WriteFile` etc.
+- [math](stdlib/main) etc.
+- [net/http](stdlib/net/http) [net/url](stdlib/net/url) so import for back-end developer!
+- [path](stdlib/path) implements utility routines for manipulating slash-separated, such as `Split, Join, Dir`.
+- [regexp](stdlib/regexp) RE functions.
+- [strconv](stdlib/strconv) types -> string or verse, such as `strconv.ParseInt strconv.FormtInt64`.
+- [strings](stdlib/strings) implements simple functions to manipulate UTF-8 encoded strings.
+- [time](stdlib/time) time functions, such as `time.Now, time.NewTicker time.After` etc.
 
 ### project
 
@@ -58,9 +58,9 @@ example
 - [The Go Blog: Getting to Go: The Journey of Go's Garbage Collector](topic/go_garbage_collector.md)
 - [The Go Blog: Go GC: Prioritizing low latency and simplicity](topic/go_gc_low_latency_and_simplicity.md)
 - [The go Memory Model](topic/go_memory_model.md)
-- []()
 
 Just Links:
 
 - [How to Write Go Code](https://golang.org/doc/code.html)
-- [The Go Blog Strings, bytes, runes and characters in Go](https://blog.golang.org/strings)
+- [The Go Blog: Strings, bytes, runes and characters in Go](https://blog.golang.org/strings)
+- [The Go Blog: Defer, Panic and Recover](https://blog.golang.org/defer-panic-and-recover)
