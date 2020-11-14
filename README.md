@@ -58,6 +58,7 @@ example
 - [The Go Blog: Getting to Go: The Journey of Go's Garbage Collector](topic/go_garbage_collector.md)
 - [The Go Blog: Go GC: Prioritizing low latency and simplicity](topic/go_gc_low_latency_and_simplicity.md)
 - [The go Memory Model](topic/go_memory_model.md)
+- [The Go Blog: Organizing Go Code](topic/organizing_go_code.md)
 
 Just Links:
 
@@ -66,3 +67,5 @@ Just Links:
 - [The Go Blog: Defer, Panic and Recover](https://blog.golang.org/defer-panic-and-recover)
 - [The Go Blog: Error handling and Go](https://blog.golang.org/error-handling-and-go)
 - [The Go Blog: Working with Errors in GO 1.13](https://blog.golang.org/go1.13-errors)
+- [The Go Blog: HTTP/2 Server Push](https://blog.golang.org/h2push)
+- [The Go Blog: JSON and Go](https://blog.golang.org/json)
