@@ -36,6 +36,7 @@ pitfall
 - [math](stdlib/main) etc.
 - [net/http](stdlib/net/http) [net/url](stdlib/net/url) so import for back-end developer!
 - [path](stdlib/path) implements utility routines for manipulating slash-separated, such as `Split, Join, Dir`.
+- [reflect](stdlib/reflect) implements run-time reflection, allowing a program to manipulate objects with arbitrary types.
 - [regexp](stdlib/regexp) RE functions.
 - [strconv](stdlib/strconv) types -> string or verse, such as `strconv.ParseInt strconv.FormtInt64`.
 - [strings](stdlib/strings) implements simple functions to manipulate UTF-8 encoded strings.
@@ -69,6 +70,7 @@ Just Links:
 - [The Go Blog: Working with Errors in GO 1.13](https://blog.golang.org/go1.13-errors)
 - [The Go Blog: HTTP/2 Server Push](https://blog.golang.org/h2push)
 - [The Go Blog: JSON and Go](https://blog.golang.org/json)
+- [The Go Blog: The Laws of Reflection](https://blog.golang.org/laws-of-reflection)
 - [Channels in Go](https://go101.org/article/channel.html)
 - [How to Gracefully Close Channels](https://go101.org/article/channel-closing.html)
 
