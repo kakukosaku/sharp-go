@@ -69,3 +69,10 @@ Just Links:
 - [The Go Blog: Working with Errors in GO 1.13](https://blog.golang.org/go1.13-errors)
 - [The Go Blog: HTTP/2 Server Push](https://blog.golang.org/h2push)
 - [The Go Blog: JSON and Go](https://blog.golang.org/json)
+- [Channels in Go](https://go101.org/article/channel.html)
+- [How to Gracefully Close Channels](https://go101.org/article/channel-closing.html)
+
+Some Video introduced by Go documentation~
+
+- [Go Concurrency Patterns](https://www.youtube.com/watch?v=f6kdp27TYZs)
+- [Advanced Go Concurrency Patterns](https://www.youtube.com/watch?v=QDDwwePbDtw)
