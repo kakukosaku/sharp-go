@@ -73,6 +73,8 @@ Just Links:
 - [The Go Blog: The Laws of Reflection](https://blog.golang.org/laws-of-reflection)
 - [Channels in Go](https://go101.org/article/channel.html)
 - [How to Gracefully Close Channels](https://go101.org/article/channel-closing.html)
+- [Go Data Structures: Interfaces](https://research.swtch.com/interfaces)
+- [The Go Blog: Profiling Go Programs](https://blog.golang.org/pprof)
 
 Some Video introduced by Go documentation~
 
