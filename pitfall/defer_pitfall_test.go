@@ -11,7 +11,7 @@ import (
 	"testing"
 )
 
-// Demo1 defer can change function non-named return value.
+// Demo1 defer cann't change function non-named return value.
 func Demo1(t *testing.T) int {
 	i := 1
 	defer func() {
